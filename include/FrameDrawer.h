@@ -48,24 +48,54 @@ public:
     // Draw last processed frame.
     cv::Mat DrawFrame();
 
+    void showLabels(){
+      colorSelection = cs_labels;
+    }
+    void showDf(){
+      colorSelection = cs_df;
+    }
+    void showDefault(){
+      colorSelection = cs_default;
+    }
+
+    bool mUpdated = false;
+
+    void setSemantic(slamantic::SemanticPtr const & pSemantic){
+      mpSemantic = pSemantic;
+    }
+
 protected:
 
     void DrawTextInfo(cv::Mat &im, int nState, cv::Mat &imText);
 
     // Info of the frame to be drawn
-    cv::Mat mIm;
-    int N;
+    cv::Mat              mIm;
+    int                  N;
     vector<cv::KeyPoint> mvCurrentKeys;
-    vector<bool> mvbMap, mvbVO;
-    bool mbOnlyTracking;
-    int mnTracked, mnTrackedVO;
+    vector<bool>         mvbMap, mvbVO;
+    vector<double>       mvDf;
+    vector<cv::Scalar>   mvLabelColors;
+    vector<size_t>       mvLabelIds;
+    bool                 mbOnlyTracking;
+    int                  mnTracked, mnTrackedVO;
     vector<cv::KeyPoint> mvIniKeys;
-    vector<int> mvIniMatches;
-    int mState;
+    vector<int>          mvIniMatches;
+    int                  mState;
+    vector<MapPoint*>    mvMP;
+
+    int const cs_labels = 1;
+    int const cs_df = 2;
+    int const cs_default = 0;
+    int colorSelection = cs_df;
+
+    // used to access label information
+    slamantic::SemanticPtr mpSemantic;
 
     Map* mpMap;
 
     std::mutex mMutex;
+
+
 };
 
 } //namespace ORB_SLAM

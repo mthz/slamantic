@@ -59,6 +59,7 @@ void MapDrawer::DrawMapPoints()
     {
         if(vpMPs[i]->isBad() || spRefMPs.count(vpMPs[i]))
             continue;
+
         cv::Mat pos = vpMPs[i]->GetWorldPos();
         glVertex3f(pos.at<float>(0),pos.at<float>(1),pos.at<float>(2));
     }
@@ -72,6 +73,15 @@ void MapDrawer::DrawMapPoints()
     {
         if((*sit)->isBad())
             continue;
+
+//        if(slamantic::isDfDynamic((*sit)->getDynamicsFactor())){
+//          glColor3f(1.0,0.0,0.0);
+//        }else if (slamantic::isDfStatic((*sit)->getDynamicsFactor())){
+//          glColor3f(0.0,1.0,0.0);
+//        }else{
+//          glColor3f(0.0,0.0,1.0);
+//        }
+
         cv::Mat pos = (*sit)->GetWorldPos();
         glVertex3f(pos.at<float>(0),pos.at<float>(1),pos.at<float>(2));
 

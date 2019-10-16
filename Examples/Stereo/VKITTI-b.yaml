@@ -5,10 +5,10 @@
 #--------------------------------------------------------------------------------------------
 
 # Camera calibration and distortion parameters (OpenCV) 
-Camera.fx: 707.0912
-Camera.fy: 707.0912
-Camera.cx: 601.8873
-Camera.cy: 183.1104
+Camera.fx: 725
+Camera.fy: 725
+Camera.cx: 620.5
+Camera.cy: 187.0
 
 Camera.k1: 0.0
 Camera.k2: 0.0
@@ -22,7 +22,7 @@ Camera.height: 376
 Camera.fps: 10.0
 
 # stereo baseline times fx
-Camera.bf: 379.8145
+Camera.bf: 386.2256
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
@@ -35,7 +35,7 @@ ThDepth: 40
 #--------------------------------------------------------------------------------------------
 
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 2000
+ORBextractor.nFeatures: 1200
 
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2
@@ -47,7 +47,7 @@ ORBextractor.nLevels: 8
 # Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
 # Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
 # You can lower these values if your images have low contrast			
-ORBextractor.iniThFAST: 12
+ORBextractor.iniThFAST: 14
 ORBextractor.minThFAST: 7
 
 #--------------------------------------------------------------------------------------------
@@ -64,3 +64,6 @@ Viewer.ViewpointY: -100
 Viewer.ViewpointZ: -0.1
 Viewer.ViewpointF: 2000
 
+
+DynamicFactor: 0
+DisableVisualOdometry: 0

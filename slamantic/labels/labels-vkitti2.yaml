@@ -1,0 +1,22 @@
+%YAML:1.0
+
+labels:
+  - { dynamicFactor: 0, name: Undefined, color: [0, 0, 0], id: 0, enabled: true, isThing: false, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.2,name: Terrain, color: [210, 0, 200], id: 1, enabled: true, isThing: false, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: 0,name: Sky, color: [90, 200, 255], id: 2, enabled: true, isThing: false, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.2,name: Tree, color: [0, 199, 0], id: 3, enabled: true, isThing: true, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.2,name: Vegetation, color: [90, 240, 0], id: 4, enabled: true, isThing: false, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.5,name: Building, color: [140, 140, 140], id: 5, enabled: true, isThing: true, isDynamic: false, isInstance: true, isUnReliable: false}
+  - { dynamicFactor: -0.5,name: Road, color: [100, 60, 100], id: 6, enabled: true, isThing: false, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.5,name: GuardRail, color: [250, 100, 255], id: 7, enabled: true, isThing: true, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.5,name: TrafficSign, color: [255, 255, 0], id: 8, enabled: true, isThing: true, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.5,name: TrafficLight, color: [200, 200, 0], id: 9, enabled: true, isThing: true, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: -0.5,name: Pole, color: [255, 130, 0], id: 10, enabled: true, isThing: true, isDynamic: false, isInstance: true, isUnReliable: false}
+  - { dynamicFactor: -0.5, name: Misc, color: [80, 80, 80], id: 11, enabled: true, isThing: true, isDynamic: false, isInstance: false, isUnReliable: false}
+  - { dynamicFactor: 0.5,name: Truck, color: [160, 60, 60], id: 12, enabled: true, isThing: true, isDynamic: true, isInstance: false, isUnReliable: true}
+  - { dynamicFactor: 0.5,name: Car, color: [255, 127, 80], id: 13, enabled: true, isThing: true, isDynamic: true, isInstance: false, isUnReliable: true}
+  - { dynamicFactor: 0.5,name: Van, color: [0, 139, 139], id: 14, enabled: true, isThing: true, isDynamic: true, isInstance: false, isUnReliable: true}
+
+semantic:
+  # type of semantic image (id,rgb)
+  type: "rgb"

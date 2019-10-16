@@ -1,0 +1,28 @@
+%YAML:1.0test
+
+labels:
+  - { dynamicFactor: -0.5,  name: Road, color: [128, 64, 128], isThing: false, enabled: true, id: 0}
+  - { dynamicFactor: -0.5,  name: Sidewalk, color: [244, 35, 232], isThing: false, enabled: true, id: 1}
+  - { dynamicFactor: -0.5,  name: Building, color: [70, 70, 70], isThing: false, enabled: true, id: 2 }
+  - { dynamicFactor: -0.5,  name: Wall, color: [102, 102, 156], isThing: false, enabled: true, id: 3 }
+  - { dynamicFactor: -0.5,  name: Fence, color: [190, 15, 153], isThing: false, enabled: true, id: 4 }
+  - { dynamicFactor: -0.5,  name: Pole, color: [153,153,153], isThing: true, enabled: true, id: 5 }
+  - { dynamicFactor: -0.5,  name: Traffic Light, color: [250, 170, 30], isThing: true, enabled: true, id: 6 }
+  - { dynamicFactor: -0.5,  name: Traffic Sign, color: [220, 220, 0], isThing: true, enabled: true, id: 7}
+  - { dynamicFactor: -0.2,  name: Vegetation, color: [107, 142, 35], isThing: false, enabled: true, id: 8 }
+  - { dynamicFactor: -0.2,  name: Terrain, color: [152, 251, 152], isThing: false, enabled: true , id: 9}
+  - { dynamicFactor: 0,  name: Sky, color: [70, 130, 180], isUnReliable: true,  isDynamic: false, isThing: false, enabled: true , id: 10}
+  - { dynamicFactor: 1, name: Rider, color: [255, 0, 0], isUnReliable: true, isDynamic: true, isThing: true, enabled: true , id: 12}
+  - { dynamicFactor: 0.5,  name: Car, color: [0, 0, 142], isUnReliable: true,isDynamic: true, isThing: true, enabled: true , id: 13}
+  - { dynamicFactor: 0.5,  name: Truck, color: [0, 0, 70], isUnReliable: true,isDynamic: true, isThing: true, enabled: true , id: 14}
+  - { dynamicFactor: 0.5,  name: Bus, color: [0, 60, 100], isUnReliable: true,isDynamic: true, isThing: true, enabled: true , id: 15}
+  - { dynamicFactor: 0.5,  name: Train, color: [0, 80, 100], isUnReliable: true,isDynamic: true, isThing: true, enabled: true , id: 16}
+  - { dynamicFactor: 0.5,  name: Motorcycle, color: [0, 0, 230], isUnReliable: true,isDynamic: true, isThing: true, enabled: true , id: 17}
+  - { dynamicFactor: 0.5,  name: Bicycle, color: [119, 11, 32], isUnReliable: true,isDynamic: true, isThing: true, enabled: true , id: 18}
+  - { dynamicFactor: 0, name: Void, color: [0, 0, 0], isThing: false, enabled: false , id: 19}
+  - { dynamicFactor: 1, name: Person, color: [220, 20, 60], isUnReliable: true, isDynamic: true, isThing: true, enabled: true, id: 11 }
+
+semantic:
+  type: "rgb"
+  showLabelBar: 1
+  algorithm: "test"

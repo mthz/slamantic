@@ -5,24 +5,24 @@
 #--------------------------------------------------------------------------------------------
 
 # Camera calibration and distortion parameters (OpenCV) 
-Camera.fx: 721.5377
-Camera.fy: 721.5377
-Camera.cx: 609.5593
-Camera.cy: 172.854
+Camera.fx: 1131.26
+Camera.fy: 1131.26
+Camera.cx: 548.49
+Camera.cy: 256.5685
 
 Camera.k1: 0.0
 Camera.k2: 0.0
 Camera.p1: 0.0
 Camera.p2: 0.0
 
-Camera.width: 1241
-Camera.height: 376
+Camera.width: 1024
+Camera.height: 512
 
 # Camera frames per second 
-Camera.fps: 10.0
+Camera.fps: 20.0
 
 # stereo baseline times fx
-Camera.bf: 387.5744
+Camera.bf: 236.787
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
@@ -64,3 +64,17 @@ Viewer.ViewpointY: -100
 Viewer.ViewpointZ: -0.1
 Viewer.ViewpointF: 2000
 
+# mono
+#Viewer.KeyFrameSize: 0.1
+#Viewer.KeyFrameLineWidth: 1
+#Viewer.GraphLineWidth: 1
+#Viewer.PointSize:2
+#Viewer.CameraSize: 0.15
+#Viewer.CameraLineWidth: 2
+#Viewer.ViewpointX: 0
+#Viewer.ViewpointY: -10
+#Viewer.ViewpointZ: -0.1
+#Viewer.ViewpointF: 2000
+
+DynamicFactor: 1
+DisableVisualOdometry: 0

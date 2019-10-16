@@ -32,6 +32,8 @@
 
 #include <opencv2/opencv.hpp>
 
+#include <slamantic/SemanticImage.hpp>
+
 namespace ORB_SLAM2
 {
 #define FRAME_GRID_ROWS 48
@@ -49,16 +51,16 @@ public:
     Frame(const Frame &frame);
 
     // Constructor for stereo cameras.
-    Frame(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timeStamp, ORBextractor* extractorLeft, ORBextractor* extractorRight, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
+    Frame(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timeStamp, ORBextractor* extractorLeft, ORBextractor* extractorRight, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, cv::Mat const & mask);
 
     // Constructor for RGB-D cameras.
-    Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
+    Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, cv::Mat const & mask);
 
     // Constructor for Monocular cameras.
-    Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth);
+    Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, cv::Mat const & mask);
 
     // Extract ORB on the image. 0 for left image and 1 for right image.
-    void ExtractORB(int flag, const cv::Mat &im);
+    void ExtractORB(int flag, const cv::Mat &im, const cv::Mat & mask);
 
     // Compute Bag of Words representation.
     void ComputeBoW();
@@ -187,6 +189,9 @@ public:
 
     static bool mbInitialComputations;
 
+    std::string mFrameName;
+
+    slamantic::SemanticImagePtr mpSemanticImage;
 
 private:
 

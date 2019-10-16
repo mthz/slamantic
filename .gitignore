@@ -17,8 +17,15 @@ Thirdparty/DBoW2/lib/
 Thirdparty/g2o/build/
 Thirdparty/g2o/config.h
 Thirdparty/g2o/lib/
+Thirdparty/easyloggingpp
+Thirdparty/eigen
+Thirdparty/Pangolin_src
+Thirdparty/pangolin
+Thirdparty/pybind11
 Vocabulary/ORBvoc.txt
 build/
 *~
 lib/
-
+.idea
+cmake-*
+python

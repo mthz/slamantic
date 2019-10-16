@@ -28,124 +28,166 @@
 #include<opencv2/core/core.hpp>
 #include<mutex>
 
+#include <slamantic/SemanticDescriptor.hpp>
+#include <slamantic/DynamicsFactor.hpp>
+
 namespace ORB_SLAM2
 {
 
-class KeyFrame;
-class Map;
-class Frame;
+  class KeyFrame;
+  class Map;
+  class Frame;
 
 
-class MapPoint
-{
-public:
-    MapPoint(const cv::Mat &Pos, KeyFrame* pRefKF, Map* pMap);
-    MapPoint(const cv::Mat &Pos,  Map* pMap, Frame* pFrame, const int &idxF);
+  class MapPoint
+  {
+    public:
+      MapPoint(const cv::Mat& Pos, KeyFrame *pRefKF, Map *pMap);
+      MapPoint(const cv::Mat& Pos, Map *pMap, Frame *pFrame, const int& idxF);
 
-    void SetWorldPos(const cv::Mat &Pos);
-    cv::Mat GetWorldPos();
+      void SetWorldPos(const cv::Mat& Pos);
+      cv::Mat GetWorldPos();
 
-    cv::Mat GetNormal();
-    KeyFrame* GetReferenceKeyFrame();
+      cv::Mat GetNormal();
+      KeyFrame *GetReferenceKeyFrame();
 
-    std::map<KeyFrame*,size_t> GetObservations();
-    int Observations();
+      std::map<KeyFrame *, size_t> GetObservations();
+      int Observations();
 
-    void AddObservation(KeyFrame* pKF,size_t idx);
-    void EraseObservation(KeyFrame* pKF);
+      void AddObservation(KeyFrame *pKF, size_t idx);
+      void EraseObservation(KeyFrame *pKF);
 
-    int GetIndexInKeyFrame(KeyFrame* pKF);
-    bool IsInKeyFrame(KeyFrame* pKF);
+      int GetIndexInKeyFrame(KeyFrame *pKF);
+      bool IsInKeyFrame(KeyFrame *pKF);
 
-    void SetBadFlag();
-    bool isBad();
+      void SetBadFlag();
+      bool isBad();
 
-    void Replace(MapPoint* pMP);    
-    MapPoint* GetReplaced();
+      void Replace(MapPoint *pMP);
+      MapPoint *GetReplaced();
 
-    void IncreaseVisible(int n=1);
-    void IncreaseFound(int n=1);
-    float GetFoundRatio();
-    inline int GetFound(){
+      void IncreaseVisible(int n = 1);
+      void IncreaseFound(int n = 1);
+      float GetFoundRatio();
+      inline int GetFound()
+      {
         return mnFound;
-    }
+      }
 
-    void ComputeDistinctiveDescriptors();
+      void ComputeDistinctiveDescriptors();
 
-    cv::Mat GetDescriptor();
+      cv::Mat GetDescriptor();
 
-    void UpdateNormalAndDepth();
+      void UpdateNormalAndDepth();
 
-    float GetMinDistanceInvariance();
-    float GetMaxDistanceInvariance();
-    int PredictScale(const float &currentDist, KeyFrame*pKF);
-    int PredictScale(const float &currentDist, Frame* pF);
-
-public:
-    long unsigned int mnId;
-    static long unsigned int nNextId;
-    long int mnFirstKFid;
-    long int mnFirstFrame;
-    int nObs;
-
-    // Variables used by the tracking
-    float mTrackProjX;
-    float mTrackProjY;
-    float mTrackProjXR;
-    bool mbTrackInView;
-    int mnTrackScaleLevel;
-    float mTrackViewCos;
-    long unsigned int mnTrackReferenceForFrame;
-    long unsigned int mnLastFrameSeen;
-
-    // Variables used by local mapping
-    long unsigned int mnBALocalForKF;
-    long unsigned int mnFuseCandidateForKF;
-
-    // Variables used by loop closing
-    long unsigned int mnLoopPointForKF;
-    long unsigned int mnCorrectedByKF;
-    long unsigned int mnCorrectedReference;    
-    cv::Mat mPosGBA;
-    long unsigned int mnBAGlobalForKF;
+      float GetMinDistanceInvariance();
+      float GetMaxDistanceInvariance();
+      int PredictScale(const float& currentDist, KeyFrame *pKF);
+      int PredictScale(const float& currentDist, Frame *pF);
 
 
-    static std::mutex mGlobalMutex;
+      void computeDynamicsFactor();
 
-protected:    
+      void computeLabelProbability();
 
-     // Position in absolute coordinates
-     cv::Mat mWorldPos;
+      double getDynamicsFactor() const
+      {
+        return mDynamicsFactor;
+      }
 
-     // Keyframes observing the point and associated index in keyframe
-     std::map<KeyFrame*,size_t> mObservations;
+      slamantic::LabelId getLabelId(){
+        return mSemanticDescriptor.labelId;
+      }
 
-     // Mean viewing direction
-     cv::Mat mNormalVector;
+      void handleDynamicOutlier();
 
-     // Best descriptor to fast matching
-     cv::Mat mDescriptor;
+      /**
+       * disable dynamics factor suage
+       */
+      static void disableDynamicFactor()
+      {
+        mDisableDynamicFactor = true;
+      }
 
-     // Reference KeyFrame
-     KeyFrame* mpRefKF;
 
-     // Tracking counters
-     int mnVisible;
-     int mnFound;
+    public:
+      long unsigned int        mnId;
+      static long unsigned int nNextId;
+      long int                 mnFirstKFid;
+      long int                 mnFirstFrame;
+      int                      nObs;
+      int                      nObsMono = 0;
 
-     // Bad flag (we do not currently erase MapPoint from memory)
-     bool mbBad;
-     MapPoint* mpReplaced;
+      // Variables used by the tracking
+      float             mTrackProjX;
+      float             mTrackProjY;
+      float             mTrackProjXR;
+      bool              mbTrackInView;
+      int               mnTrackScaleLevel;
+      float             mTrackViewCos;
+      long unsigned int mnTrackReferenceForFrame;
+      long unsigned int mnLastFrameSeen;
 
-     // Scale invariance distances
-     float mfMinDistance;
-     float mfMaxDistance;
+      // Variables used by local mapping
+      long unsigned int mnBALocalForKF;
+      long unsigned int mnFuseCandidateForKF;
 
-     Map* mpMap;
+      // Variables used by loop closing
+      long unsigned int mnLoopPointForKF;
+      long unsigned int mnCorrectedByKF;
+      long unsigned int mnCorrectedReference;
+      cv::Mat           mPosGBA;
+      long unsigned int mnBAGlobalForKF;
 
-     std::mutex mMutexPos;
-     std::mutex mMutexFeatures;
-};
+
+      static std::mutex mGlobalMutex;
+
+      static bool mDisableDynamicFactor; //< flag to disable dynamic factor
+
+
+
+    protected:
+
+      double mDynamicsFactor = slamantic::DYNAMICS_FACTOR_DYNAMIC;
+      bool   mDynamicOutlier = false; // flag if map point is permanent outlier
+
+      typedef slamantic::SingleSemanticDescriptorAgg TSemanticDescriptor;
+      TSemanticDescriptor                            mSemanticDescriptor; // semantic descriptor
+
+
+      // Position in absolute coordinates
+      cv::Mat mWorldPos;
+
+      // Keyframes observing the point and associated index in keyframe
+      std::map<KeyFrame *, size_t> mObservations;
+
+      // Mean viewing direction
+      cv::Mat mNormalVector;
+
+      // Best descriptor to fast matching
+      cv::Mat mDescriptor;
+
+      // Reference KeyFrame
+      KeyFrame *mpRefKF;
+      KeyFrame *mpLatestKF   = nullptr;
+
+      // Tracking counters
+      int mnVisible;
+      int mnFound;
+
+      // Bad flag (we do not currently erase MapPoint from memory)
+      bool     mbBad;
+      MapPoint *mpReplaced;
+
+      // Scale invariance distances
+      float mfMinDistance;
+      float mfMaxDistance;
+
+      Map *mpMap;
+
+      std::mutex mMutexPos;
+      std::mutex mMutexFeatures;
+  };
 
 } //namespace ORB_SLAM
 

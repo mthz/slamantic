@@ -1,0 +1,91 @@
+%YAML:1.0
+
+labels:
+  - {name: 'U', dynamicFactor: -0.5, color: [50, 50, 50], id: 0}
+  - {name: 'BG', dynamicFactor: -0.5, color: [100, 100, 100], id: 1}
+  - {name: 'person', dynamicFactor: 1, color: [220, 20, 60], id: 2}
+  - {name: 'bicycle', dynamicFactor: 1, color: [60, 0, 60], id: 3}
+  - {name: 'car', dynamicFactor: 0.5, color: [0, 0, 142], id: 4}
+  - {name: 'motorcycle', dynamicFactor: 0.5, id: 5}
+  - {name: 'airplane', dynamicFactor: 0.5, id: 6}
+  - {name: 'bus', dynamicFactor: 0.5, id: 7}
+  - {name: 'train', dynamicFactor: 0.5, id: 8}
+  - {name: 'truck', dynamicFactor: 0.5, id: 9}
+  - {name: 'boat', dynamicFactor: 1, id: 10}
+  - {name: 'traffic light', dynamicFactor: -0.5, id: 11}
+  - {name: 'fire hydrant', dynamicFactor: -0.5, id: 12}
+  - {name: 'stop sign', dynamicFactor: -0.5, id: 13}
+  - {name: 'parking meter', dynamicFactor: -0.5, id: 14}
+  - {name: 'bench', dynamicFactor: -0.5, id: 15}
+  - {name: 'bird', dynamicFactor: 1, id: 16}
+  - {name: 'cat', dynamicFactor: 1, color: [220, 20, 60], id: 17}
+  - {name: 'dog', dynamicFactor: 1, color: [220, 20, 60], id: 18}
+  - {name: 'horse', dynamicFactor: 1, color: [220, 20, 60], id: 19}
+  - {name: 'sheep', dynamicFactor: 1, color: [220, 20, 60], id: 20}
+  - {name: 'cow', dynamicFactor: 1, color: [220, 20, 60], id: 21}
+  - {name: 'elephant', dynamicFactor: 1, id: 22}
+  - {name: 'bear', dynamicFactor: 1, id: 23}
+  - {name: 'zebra', dynamicFactor: 1, id: 24}
+  - {name: 'giraffe', dynamicFactor: 1, id: 25}
+  - {name: 'backpack', dynamicFactor: 1, id: 26}
+  - {name: 'umbrella', dynamicFactor: 1, id: 27}
+  - {name: 'handbag', dynamicFactor: 1, id: 28}
+  - {name: 'tie', dynamicFactor: 1, id: 29}
+  - {name: 'suitcase', dynamicFactor: 0.5, id: 30}
+  - {name: 'frisbee', dynamicFactor: 0.5, id: 31}
+  - {name: 'skis', dynamicFactor: 0.5, id: 32}
+  - {name: 'snowboard', dynamicFactor: 0.5, id: 33}
+  - {name: 'sports ball', dynamicFactor: 1, id: 34}
+  - {name: 'kite', dynamicFactor: 1, id: 35}
+  - {name: 'baseball bat', dynamicFactor: 0.5, id: 36}
+  - {name: 'baseball glove', dynamicFactor: 0.5, id: 37}
+  - {name: 'skateboard', dynamicFactor: 1, id: 38}
+  - {name: 'surfboard', dynamicFactor: 1, id: 39}
+  - {name: 'tennis racket', dynamicFactor: 0.5, id: 40}
+  - {name: 'bottle', dynamicFactor: 0.5, id: 41}
+  - {name: 'wine glass', dynamicFactor: 0.5, id: 42}
+  - {name: 'cup', dynamicFactor: 0.5, id: 43}
+  - {name: 'fork', dynamicFactor: 0.5, id: 44}
+  - {name: 'knife', dynamicFactor: 0.5, id: 45}
+  - {name: 'spoon', dynamicFactor: 0.5, id: 46}
+  - {name: 'bowl', dynamicFactor: 0.5, id: 47}
+  - {name: 'banana', dynamicFactor: 0.5, id: 48}
+  - {name: 'apple', dynamicFactor: 0.5, id: 49}
+  - {name: 'sandwich', dynamicFactor: 0.5, id: 50}
+  - {name: 'orange', dynamicFactor: 0.5, id: 51}
+  - {name: 'broccoli', dynamicFactor: 0.5, id: 52}
+  - {name: 'carrot', dynamicFactor: 0.5, id: 53}
+  - {name: 'hot dog', dynamicFactor: 0.5, id: 54}
+  - {name: 'pizza', dynamicFactor: 0.5, id: 55}
+  - {name: 'donut', dynamicFactor: 0.5, id: 56}
+  - {name: 'cake', dynamicFactor: 0.5, id: 57}
+  - {name: 'chair', color: [142, 0, 142], dynamicFactor: 0.5, id: 58}
+  - {name: 'couch', dynamicFactor: -0.5, id: 59}
+  - {name: 'potted plant', dynamicFactor: -0.5, id: 60}
+  - {name: 'bed', dynamicFactor: -0.5, id: 61}
+  - {name: 'dining table', dynamicFactor: -0.5, id: 62}
+  - {name: 'toilet', dynamicFactor: -0.5, id: 63}
+  - {name: 'tv', dynamicFactor: -0.5, id: 64}
+  - {name: 'laptop', dynamicFactor: 0.5, color: [220, 0, 0], id: 65}
+  - {name: 'mouse', dynamicFactor: 0.5, color: [220, 0, 0], id: 66}
+  - {name: 'remote', dynamicFactor: 0, id: 67}
+  - {name: 'keyboard', dynamicFactor: 0, id: 68}
+  - {name: 'cell phone', dynamicFactor: 1, id: 69}
+  - {name: 'microwave', dynamicFactor: -0.5, id: 70}
+  - {name: 'oven', dynamicFactor: -0.5, id: 71}
+  - {name: 'toaster', dynamicFactor: -0.5, id: 72}
+  - {name: 'sink', dynamicFactor: -0.5, id: 73}
+  - {name: 'refrigerator', dynamicFactor: -0.5, id: 74}
+  - {name: 'book', dynamicFactor: -0.5, id: 75}
+  - {name: 'clock', dynamicFactor: 1, id: 76}
+  - {name: 'vase', dynamicFactor: 0.5, color: [220, 0, 0], id: 77}
+  - {name: 'scissors', dynamicFactor: 0.5, color: [220, 0, 0], id: 78}
+  - {name: 'teddy bear', dynamicFactor: 0.5, color: [220, 0, 0], id: 79}
+  - {name: 'hair drier', dynamicFactor: 0.5, color: [220, 0, 0], id: 80}
+  - {name: 'toothbrush', dynamicFactor: 1, id: 81}
+
+semantic:
+  # name of algorithm; is used to locate semeantic images
+  algorithm: "maskrcnn"
+  # type of semantic image (id,rgb)
+  type: "id"

@@ -22,9 +22,9 @@
 #include "Converter.h"
 #include "ORBmatcher.h"
 #include <thread>
+#include <tbb/parallel_invoke.h>
 
-namespace ORB_SLAM2
-{
+namespace ORB_SLAM2 {
 
   long unsigned int Frame::nNextId               = 0;
   bool              Frame::mbInitialComputations = true;
@@ -54,6 +54,7 @@ namespace ORB_SLAM2
 
     if(!frame.mTcw.empty())
       SetPose(frame.mTcw);
+
   }
 
 
@@ -66,7 +67,8 @@ namespace ORB_SLAM2
                cv::Mat& K,
                cv::Mat& distCoef,
                const float& bf,
-               const float& thDepth)
+               const float& thDepth,
+               cv::Mat const& mask)
     : mpORBvocabulary(voc), mpORBextractorLeft(extractorLeft), mpORBextractorRight(extractorRight),
       mTimeStamp(timeStamp), mK(K.clone()), mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth),
       mpReferenceKF(static_cast<KeyFrame *>(NULL))
@@ -83,11 +85,8 @@ namespace ORB_SLAM2
     mvLevelSigma2     = mpORBextractorLeft->GetScaleSigmaSquares();
     mvInvLevelSigma2  = mpORBextractorLeft->GetInverseScaleSigmaSquares();
 
-    // ORB extraction
-    thread threadLeft(&Frame::ExtractORB, this, 0, imLeft);
-    thread threadRight(&Frame::ExtractORB, this, 1, imRight);
-    threadLeft.join();
-    threadRight.join();
+    ExtractORB(0, imLeft, mask);
+    ExtractORB(1, imRight, cv::Mat());
 
     N = mvKeys.size();
 
@@ -100,7 +99,6 @@ namespace ORB_SLAM2
 
     mvpMapPoints = vector<MapPoint *>(N, static_cast<MapPoint *>(NULL));
     mvbOutlier   = vector<bool>(N, false);
-
 
     // This is done only for the first Frame (or after a change in the calibration)
     if(mbInitialComputations)
@@ -125,6 +123,7 @@ namespace ORB_SLAM2
     AssignFeaturesToGrid();
   }
 
+
   Frame::Frame(const cv::Mat& imGray,
                const cv::Mat& imDepth,
                const double& timeStamp,
@@ -133,7 +132,8 @@ namespace ORB_SLAM2
                cv::Mat& K,
                cv::Mat& distCoef,
                const float& bf,
-               const float& thDepth)
+               const float& thDepth,
+               cv::Mat const& mask)
     : mpORBvocabulary(voc), mpORBextractorLeft(extractor), mpORBextractorRight(static_cast<ORBextractor *>(NULL)),
       mTimeStamp(timeStamp), mK(K.clone()), mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
   {
@@ -150,7 +150,7 @@ namespace ORB_SLAM2
     mvInvLevelSigma2  = mpORBextractorLeft->GetInverseScaleSigmaSquares();
 
     // ORB extraction
-    ExtractORB(0, imGray);
+    ExtractORB(0, imGray, mask);
 
     N = mvKeys.size();
 
@@ -195,10 +195,12 @@ namespace ORB_SLAM2
                cv::Mat& K,
                cv::Mat& distCoef,
                const float& bf,
-               const float& thDepth)
+               const float& thDepth,
+               cv::Mat const& mask)
     : mpORBvocabulary(voc), mpORBextractorLeft(extractor), mpORBextractorRight(static_cast<ORBextractor *>(NULL)),
       mTimeStamp(timeStamp), mK(K.clone()), mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
   {
+
     // Frame ID
     mnId = nNextId++;
 
@@ -212,7 +214,7 @@ namespace ORB_SLAM2
     mvInvLevelSigma2  = mpORBextractorLeft->GetInverseScaleSigmaSquares();
 
     // ORB extraction
-    ExtractORB(0, imGray);
+    ExtractORB(0, imGray, mask);
 
     N = mvKeys.size();
 
@@ -268,32 +270,16 @@ namespace ORB_SLAM2
     }
   }
 
-  void Frame::ExtractORB(int flag, const cv::Mat& im)
+  void Frame::ExtractORB(int flag, const cv::Mat& im, const cv::Mat& mask)
   {
-    if(flag==0)
-        (*mpORBextractorLeft)(im,cv::Mat(),mvKeys,mDescriptors);
+    if(flag == 0)
+    {
+      (*mpORBextractorLeft)(im, mask, mvKeys, mDescriptors);
+    }
     else
-        (*mpORBextractorRight)(im,cv::Mat(),mvKeysRight,mDescriptorsRight);
-
-//    int    maxCorners   = 700;
-//    double qualityLevel = 0.01;
-//    double minDistance  = 15;
-//    int    blockSize    = 3;
-//    bool   harrisCorner = false;
-//    double k            = 0.04;
-//
-//    cv::Ptr<cv::FeatureDetector> pDetector = cv::GFTTDetector::create(maxCorners,
-//                                                                      qualityLevel,
-//                                                                      minDistance,
-//                                                                      blockSize,
-//                                                                      harrisCorner,
-//                                                                      k);
-//
-//    pDetector->detect(im, mvKeys);
-//
-//    cv::Ptr<cv::FeatureDetector> pExtractor = cv::ORB::create(700, 1.2, 1);
-//
-//    pExtractor->compute(im, mvKeys, mDescriptors);
+    {
+      (*mpORBextractorRight)(im, cv::Mat(), mvKeysRight, mDescriptorsRight);
+    }
 
   }
 
@@ -344,20 +330,19 @@ namespace ORB_SLAM2
     const cv::Mat PO          = P - mOw;
     const float   dist        = cv::norm(PO);
 
-//    if(dist < minDistance || dist > maxDistance)
-//      return false;
+    if(dist < minDistance || dist > maxDistance)
+      return false;
 
     // Check viewing angle
     cv::Mat Pn = pMP->GetNormal();
 
     const float viewCos = PO.dot(Pn) / dist;
 
-//    if(viewCos < viewingCosLimit)
-//      return false;
+    if(viewCos < viewingCosLimit)
+      return false;
 
     // Predict scale in the image
-//    const int nPredictedLevel = pMP->PredictScale(dist, this);
-    const int nPredictedLevel = 0;
+    const int nPredictedLevel = pMP->PredictScale(dist, this);
 
     // Data used by the tracking
     pMP->mbTrackInView     = true;
@@ -512,6 +497,7 @@ namespace ORB_SLAM2
       mnMinY = 0.0f;
       mnMaxY = imLeft.rows;
     }
+
   }
 
   void Frame::ComputeStereoMatches()

@@ -26,62 +26,93 @@
 #include "MapDrawer.h"
 #include "Tracking.h"
 #include "System.h"
+#include <unistd.h>
 
 #include <mutex>
 
 namespace ORB_SLAM2
 {
 
-class Tracking;
-class FrameDrawer;
-class MapDrawer;
-class System;
+  class Tracking;
+  class FrameDrawer;
+  class MapDrawer;
+  class System;
 
-class Viewer
-{
-public:
-    Viewer(System* pSystem, FrameDrawer* pFrameDrawer, MapDrawer* pMapDrawer, Tracking *pTracking, const string &strSettingPath);
+  class Viewer
+  {
+    public:
+      Viewer(System *pSystem,
+             FrameDrawer *pFrameDrawer,
+             MapDrawer *pMapDrawer,
+             Tracking *pTracking,
+             const string& strSettingPath);
 
-    // Main thread function. Draw points, keyframes, the current camera pose and the last processed
-    // frame. Drawing is refreshed according to the camera fps. We use Pangolin.
-    void Run();
+      // Main thread function. Draw points, keyframes, the current camera pose and the last processed
+      // frame. Drawing is refreshed according to the camera fps. We use Pangolin.
+      void Run();
 
-    void RequestFinish();
+      void RequestFinish();
 
-    void RequestStop();
+      void RequestStop();
 
-    bool isFinished();
+      bool isFinished();
 
-    bool isStopped();
+      bool isStopped();
 
-    void Release();
+      void Release();
 
-private:
 
-    bool Stop();
+      void StartRecording()
+      {
+        mRecord = true;
+      }
+      void StopRecording()
+      {
+        mRecord = false;
+      }
 
-    System* mpSystem;
-    FrameDrawer* mpFrameDrawer;
-    MapDrawer* mpMapDrawer;
-    Tracking* mpTracker;
+      void Continue()
+      {
+        if(mSingleStep)
+        {
+          while(!mContinue)
+          {
+            usleep(100);
+          }
+          mContinue = false;
+        }
+      }
 
-    // 1/fps in ms
-    double mT;
-    float mImageWidth, mImageHeight;
+    private:
 
-    float mViewpointX, mViewpointY, mViewpointZ, mViewpointF;
+      bool Stop();
 
-    bool CheckFinish();
-    void SetFinish();
-    bool mbFinishRequested;
-    bool mbFinished;
-    std::mutex mMutexFinish;
+      System      *mpSystem;
+      FrameDrawer *mpFrameDrawer;
+      MapDrawer   *mpMapDrawer;
+      Tracking    *mpTracker;
 
-    bool mbStopped;
-    bool mbStopRequested;
-    std::mutex mMutexStop;
+      bool mContinue   = true;
+      bool mSingleStep = false;
+      bool mRecord     = false;
 
-};
+      // 1/fps in ms
+      double mT;
+      float  mImageWidth, mImageHeight;
+
+      float      mViewpointX, mViewpointY, mViewpointZ, mViewpointF;
+
+      bool CheckFinish();
+      void SetFinish();
+      bool       mbFinishRequested;
+      bool       mbFinished;
+      std::mutex mMutexFinish;
+
+      bool       mbStopped;
+      bool       mbStopRequested;
+      std::mutex mMutexStop;
+
+  };
 
 }
 

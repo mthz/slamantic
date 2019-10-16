@@ -24,6 +24,7 @@
 #include "Optimizer.h"
 #include <unistd.h>
 #include<mutex>
+#include <slamantic/include/slamantic/slamantic.hpp>
 
 namespace ORB_SLAM2
 {
@@ -57,6 +58,8 @@ void LocalMapping::Run()
         // Check if there are keyframes in the queue
         if(CheckNewKeyFrames())
         {
+//            TIMED_SCOPE(timer, "KF");
+
             // BoW conversion and insertion in Map
             ProcessNewKeyFrame();
 
@@ -77,8 +80,10 @@ void LocalMapping::Run()
             if(!CheckNewKeyFrames() && !stopRequested())
             {
                 // Local BA
-                if(mpMap->KeyFramesInMap()>2)
-                    Optimizer::LocalBundleAdjustment(mpCurrentKeyFrame,&mbAbortBA, mpMap);
+                if(mpMap->KeyFramesInMap()>2){
+                  Optimizer::LocalBundleAdjustment(mpCurrentKeyFrame,&mbAbortBA, mpMap);
+                }
+
 
                 // Check redundant local Keyframes
                 KeyFrameCulling();
@@ -158,7 +163,7 @@ void LocalMapping::ProcessNewKeyFrame()
                 }
             }
         }
-    }    
+    }
 
     // Update links in the Covisibility Graph
     mpCurrentKeyFrame->UpdateConnections();
@@ -339,7 +344,7 @@ void LocalMapping::CreateNewMapPoints()
             }
             else if(bStereo1 && cosParallaxStereo1<cosParallaxStereo2)
             {
-                x3D = mpCurrentKeyFrame->UnprojectStereo(idx1);                
+                x3D = mpCurrentKeyFrame->UnprojectStereo(idx1);
             }
             else if(bStereo2 && cosParallaxStereo2<cosParallaxStereo1)
             {
@@ -430,10 +435,21 @@ void LocalMapping::CreateNewMapPoints()
             if(ratioDist*ratioFactor<ratioOctave || ratioDist>ratioOctave*ratioFactor)
                 continue;
 
+            // if matched feature is marked as a dynamic outlier, do not create a mappoint
+            if(mpCurrentKeyFrame->isDynamic(idx1)){
+              continue;
+            }
+
+            // if point is dynamic outlier in other KF, inherit dynamic outlier
+            if(pKF2->isDynamic(idx2)){
+              mpCurrentKeyFrame->setDynamic(idx1);
+              continue;
+            }
+
             // Triangulation is succesfull
             MapPoint* pMP = new MapPoint(x3D,mpCurrentKeyFrame,mpMap);
 
-            pMP->AddObservation(mpCurrentKeyFrame,idx1);            
+            pMP->AddObservation(mpCurrentKeyFrame,idx1);
             pMP->AddObservation(pKF2,idx2);
 
             mpCurrentKeyFrame->AddMapPoint(pMP,idx1);
@@ -653,7 +669,8 @@ void LocalMapping::KeyFrameCulling()
             MapPoint* pMP = vpMapPoints[i];
             if(pMP)
             {
-                if(!pMP->isBad())
+                // ignore
+                if(!pMP->isBad() && !slamantic::isDfDynamic(pMP->getDynamicsFactor()))
                 {
                     if(!mbMonocular)
                     {
@@ -688,7 +705,7 @@ void LocalMapping::KeyFrameCulling()
                     }
                 }
             }
-        }  
+        }
 
         if(nRedundantObservations>0.9*nMPs)
             pKF->SetBadFlag();
@@ -746,7 +763,7 @@ bool LocalMapping::CheckFinish()
 void LocalMapping::SetFinish()
 {
     unique_lock<mutex> lock(mMutexFinish);
-    mbFinished = true;    
+    mbFinished = true;
     unique_lock<mutex> lock2(mMutexStop);
     mbStopped = true;
 }

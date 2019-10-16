@@ -1,0 +1,16 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+cmake-*
+build
+lib
+Examples/Stereo/01*
+Examples/Stereo/eval*
+Thirdparty/DBoW2/build
+Thirdparty/DBoW2/lib
+Thirdparty/g2o/lib
+Thirdparty/g2o/build
+Thirdparty/eigen
+Thirdparty/easyloggingpp
+Thirdparty/pangolin
+Thirdparty/Pangolin_src
+Thirdparty/pybind11

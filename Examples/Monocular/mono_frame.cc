@@ -30,6 +30,7 @@
 
 #include <unistd.h>
 
+INITIALIZE_EASYLOGGINGPP
 
 using namespace std;
 
@@ -40,16 +41,17 @@ void LoadImages(const string& strRoot,
 
 int main(int argc, char **argv)
 {
-  if(argc != 4)
+  if(argc != 5)
   {
-    cerr << endl << "Usage: ./mono_tum path_to_vocabulary path_to_settings path_to_sequence" << endl;
+    cerr << endl << "Usage: ./mono_tum path_to_vocabulary path_to_settings path_to_sequence frames.txt" << endl;
     return 1;
   }
 
   // Retrieve paths to images
   vector<string> vstrImageFilenames;
   vector<double> vTimestamps;
-  string         strFile = string(argv[3]) + "/frames.txt";
+  string         strFile = string(argv[4]);
+
   LoadImages(string(argv[3]), strFile, vstrImageFilenames, vTimestamps);
 
   int nImages = vstrImageFilenames.size();
@@ -72,32 +74,24 @@ int main(int argc, char **argv)
   for(int ni  = 0; ni < nImages; ni++)
   {
     // Read image from file
-    cv::Mat imo = cv::imread(string(argv[3]) + "/" + vstrImageFilenames[ni], CV_LOAD_IMAGE_UNCHANGED);
-    cv::resize(imo, im, cv::Size(), 0.5, 0.5);
-
+    std::string filename = string(argv[3]) + "/" + vstrImageFilenames[ni] + ".jpg";
+    cv::Mat im = cv::imread(filename, CV_LOAD_IMAGE_UNCHANGED);
 
     double tframe = vTimestamps[ni];
 
     if(im.empty())
     {
-      cerr << endl << "Failed to load image at: " << string(argv[3]) << "/" << vstrImageFilenames[ni] << endl;
+      cerr << endl << "Failed to load image at: " << filename << endl;
       return 1;
     }
 
-#ifdef COMPILEDWITHC11
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-#else
-    std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
-#endif
 
     // Pass the image to the SLAM system
     SLAM.TrackMonocular(im, tframe);
 
-#ifdef COMPILEDWITHC11
+
     std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
-#else
-    std::chrono::monotonic_clock::time_point t2 = std::chrono::monotonic_clock::now();
-#endif
 
     double ttrack = std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
 

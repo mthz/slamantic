@@ -29,6 +29,8 @@ Checkout: https://youtu.be/tfdv7bsz5fI
 
 ### VKITTI
 
+Note: VKITTI v2 (which we used here) is not released yet. Please use the other examples in the meanwhile.
+
 Create KITTI trajectory files for sequences with `vkitti_create_extrinsic.py --dataset $vkitti_dataset_dir`. The generated trajectories for each camera are named `extrinsic_cameraN.txt` and are used to load the dataset and evaluate against it.
 
 `stereo_vkitti vocab.txt Examples/Stereo/VKITTI-[b,df,m].yaml slamantic/labels/labels-vkitti2.yaml $vkitti_dataset_dir/$scene/$variation`

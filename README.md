@@ -29,7 +29,7 @@ Checkout: https://youtu.be/tfdv7bsz5fI
 
 ### VKITTI
 
-Note: VKITTI v2 (which we used here) is not released yet. Please use the other examples in the meanwhile.
+Download [VKITTI2](https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/).
 
 Create KITTI trajectory files for sequences with `vkitti_create_extrinsic.py --dataset $vkitti_dataset_dir`. The generated trajectories for each camera are named `extrinsic_cameraN.txt` and are used to load the dataset and evaluate against it.
 

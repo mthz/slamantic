@@ -2,6 +2,20 @@
 
 This is the reference implementation of the method as described in the paper published at the ICCV Workshop [Deep Learning for Visual SLAM](http://visualslam.ai/). It is build on top of ORB_SLAM2. No additional dependency is necessary.
 
+If you use these work for your research, please use the following BibTeX entry.
+
+[ICCV 2019 open access link](https://openaccess.thecvf.com/content_ICCVW_2019/html/DL4VSLAM/Schorghuber_SLAMANTIC_-_Leveraging_Semantics_to_Improve_VSLAM_in_Dynamic_Environments_ICCVW_2019_paper.html)
+
+```BibTeX
+@InProceedings{Schorghuber_2019_ICCV,
+  author = {Schorghuber, Matthias and Steininger, Daniel and Cabon, Yohann and Humenberger, Martin and Gelautz, Margrit},
+  title = {SLAMANTIC - Leveraging Semantics to Improve VSLAM in Dynamic Environments},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
+  month = {Oct},
+  year = {2019}
+} 
+```
+
 ## License
 
 As ORB-SLAM2, SLAMANTIC is also released under a GPLv3 license. For a list of all code/library dependencies (and associated licenses), please see Dependencies.md.
